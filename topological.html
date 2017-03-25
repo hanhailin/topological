@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <metahttp-equiv
+    ="Content-Type"content="text/html;charset=UTF-8"/>
+    <title>jTopo</title>
+    <script type="text/javascript" src="static/js/jtopo-min.js"></script>
+    <script id='code'>
+        window.onload = function () {
+            //定义json数据格式
+            function setRoot(lX, lY, sX, sY, spacingX, spacingY ) {
+                this._lX = lX;
+                this._lY = lY;
+                this._sX = sX;
+                this._sY = sY;
+                this._spacingX = spacingX
+                this._spacingY = spacingY
+                if (this._sX == null && this._sY == null) {
+                    this._sX = 80;
+                    this._sY = 60;
+                }
+
+                if (this._lX == null && this._lY == null) {
+                    this._lX = 900;
+                    this._lY = 100;
+                }
+                if (this._spacingX == null) {
+                    this._spacingX = 150;
+                }
+                if (this._spacingY == null) {
+                    this._spacingY = 200;
+                }
+                var canvas = document.getElementById('canvas');
+                var stage = new JTopo.Stage(canvas);
+                scene = new JTopo.Scene(stage);
+                scene.background = 'static/img/bbb.jpg';
+            }
+
+            setRoot.prototype.parseJson = function (text) {
+                var han = eval(text)
+                return han
+            }
+
+            setRoot.prototype.dottedLink = function (nodeA, nodeZ, text, dashedPattern){
+                var link = new JTopo.Link(nodeA, nodeZ, text);
+                link.lineWidth = 3; // 线宽
+                link.dashedPattern = dashedPattern; // 虚线
+                link.bundleOffset = 60; // 折线拐角处的长度
+                link.bundleGap = 20; // 线条之间的间隔
+                link.textOffsetY = 3; // 文本偏移量（向下3个像素）
+                link.strokeColor = '0,200,255';
+                scene.add(link);
+                return link;
+            }
+
+            setRoot.prototype.createNode = function (nodeName, coordinateX, coordinateY, img) {
+                if (img == null){
+                    img = 'iCloud.png'
+                }
+                var node = new JTopo.Node(nodeName);
+                node.setSize(this._lX, this._lY);
+                node.setLocation(coordinateX, coordinateY);
+                node.setImage("static/img/" + img, true)
+                scene.add(node);
+                return node
+            }
+
+
+            setRoot.prototype.createNodes = function (layer, info, img) {
+                this._layer = layer;
+                this._img = img;
+                num = info.length;
+                var node = new Array();
+                if (this._img == null) {
+                    this._img = 'Server.png'
+                };
+                if (num%2==0)
+                {
+                    coordinateX = ( this._lX - ((num/2) * this._spacingX)  - (this._spacingX/2))
+                }
+                else {
+                    coordinateX = (this._lX -(((num+1)*this._spacingX)/2))
+                }
+                coordinateY = this._lY + (layer-1)*this._spacingY;
+                for (var i=0;i<num;i++)
+                {
+                    coordinateX = coordinateX + this._spacingX;
+                    node[i] = app.createNode(info[i].Hostname, coordinateX, coordinateY, this._img);
+                    node[i].addEventListener('mouseover',function(i) {return function(){node[i].echo = info[i].Echos}}(i));
+                    node[i].addEventListener('mouseout', function(i) {return function(){node[i].echo = '';}}(i));
+                }
+                return node
+            };
+
+            setRoot.prototype.createNodess = function (layer, info, img) {
+                this._layer = layer;
+                this._img = img;
+                num = info.length;
+                var node = new Array();
+
+                if (this._img == null) {
+                    this._img = 'Server.png'
+                };
+                if (num%2==0)
+                {
+                    coordinateX = ( this._lX - ((num/2) * this._spacingX)  - (this._spacingX/2))
+                }
+                else {
+                    coordinateX = (this._lX -(((num+1)*this._spacingX)/2))
+                }
+                coordinateY = this._lY + (layer-1)*this._spacingY;
+                for (var i=0;i<num;i++)
+                {
+                    coordinateX = coordinateX + this._spacingX;
+                    node[i] = app.createNode(info[i].hostname, coordinateX, coordinateY, this._img);
+                    node[i].addEventListener('mouseover',function(i) {return function(){node[i].echo = info[i].Echos}}(i));
+                    node[i].addEventListener('mouseout', function(i) {return function(){node[i].echo = '';}}(i));
+                }
+                return node
+            };
+
+            setRoot.prototype.toLink = function (from, to, info) {
+
+                if (from.length == null) {
+                    for (var j = 0; j < to.length; j++) {
+                        if(info == null){
+                            txt = ''
+                        }else{
+                            txt = info[j].LinkTxt
+                        }
+                        link = this.dottedLink(from, to[j], txt, 5);
+                        link.arrowsRadius = 10;
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < from.length; i++) {
+                        for (var j = 0; j < to.length; j++) {
+                            if(info == null){
+                                txt = ''
+                            }else{
+                                txt = info[j].LinkTxt
+                            }
+                            link = this.dottedLink(from[i], to[j], txt, 5);
+                            link.arrowsRadius = 10;
+                        }
+                    }
+                }
+            }
+/*
+            setRoot.prototype.getJson = function (layer, urlAdd) {
+                var self = this
+                $.ajax({
+                    url: urlAdd, data:{}, dataType:'json', success: function (res) {
+                        self.fixData(layer, res)
+                    },fail:function (err) {
+                        throw err
+                    }
+                })
+            }
+
+            setRoot.prototype.fixData = function(layer, data) {
+                console.log('layer', layer)
+                console.log('data', data)
+                layer4 = this.createNodess(layer, data)
+                app.toLink(layer3, layer4, infoL4)
+
+            }
+*/
+
+            setRoot.prototype.getJson = function (urlAdd) {
+                var xmlhttp;
+                if (window.XMLHttpRequest)
+                {
+                    xmlhttp=new XMLHttpRequest();
+                }
+                else
+                {
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.open("GET", urlAdd, false);
+                xmlhttp.send();
+                return app.parseJson(xmlhttp.responseText);
+            }
+
+            var app = new setRoot()
+
+            layer1 = app.createNode('VIP', app._lX, app._lY)
+
+            infoL2 = app.getJson('http://192.168.0.156:3000/st2')
+            layer2 = app.createNodes(2, infoL2)
+            app.toLink(layer1, layer2, infoL2)
+
+            infoL3 = app.getJson('http://192.168.0.156:3000/st3')
+            layer3 = app.createNodes(3, infoL3)
+            app.toLink(layer2, layer3, infoL3)
+
+            infoL4 = app.getJson('http://192.168.0.156:3000/st4')
+            layer4 = app.createNodes(4, infoL4)
+            app.toLink(layer3, layer4, infoL4)
+
+        };
+
+    </script>
+</head>
+<body>
+<div style="width: 1920px;margin: 0 auto; margin-top: 100px">
+    <canvas width="1920" height="1080" id="canvas" style=" background-color:#EEEEEE; border:1px solid #444;">
+    </canvas>
+</div>
+
+</body>
+</html>
+
+
+
