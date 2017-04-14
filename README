@@ -3,9 +3,9 @@
 #如果有疑问或者其它问题，联系方式在下面，广州的同学可以一起吃饭 ^_^  ^_^
 
 1、运行网站(linux 、mac下可以直接运行，也可自行编译后运行)
-   go run han.go
+   go run han.go --host <ip> --port <port>
 
-2、打开网站：http://127.0.0.1:3000/topological
+2、打开网站：http://<ip>:<port>/topological
    即可看到效果
 
 ##########################################

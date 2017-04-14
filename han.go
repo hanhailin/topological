@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -92,6 +93,10 @@ func (m *Static) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	host := flag.String("host", "127.0.0.1", "server ip address")
+	port := flag.Int("port", 3000, "server port")
+	flag.Parse()
+
 	mux := http.NewServeMux()
 
 	st2txt1 := &Text2{
@@ -155,6 +160,6 @@ func main() {
 
 	mux.Handle("/static/", &Static{})
 
-	http.ListenAndServe(":3000", mux)
+	http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), mux)
 
 }
