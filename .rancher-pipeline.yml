@@ -1,0 +1,15 @@
+stages:
+- name: 编译
+  steps:
+  - runScriptConfig:
+      image: golang:latest
+      shellScript: go build han.go
+- name: 构建镜像
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: test1
+      pushRemote: true
+      registry: index.docker.io
+timeout: 60
