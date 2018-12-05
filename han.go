@@ -93,7 +93,7 @@ func (m *Static) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	host := flag.String("host", "127.0.0.1", "server ip address")
+	host := flag.String("host", "127.0.0.2", "server ip address")
 	port := flag.Int("port", 3000, "server port")
 	flag.Parse()
 
