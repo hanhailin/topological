@@ -10,6 +10,5 @@ stages:
       dockerfilePath: ./docker/Dockerfile
       buildContext: .
       tag: test1
-      pushRemote: true
       registry: index.docker.io
 timeout: 60
