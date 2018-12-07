@@ -7,7 +7,7 @@ stages:
 - name: 构建镜像
   steps:
   - publishImageConfig:
-      dockerfilePath: ./Dockerfile
+      dockerfilePath: ./docker/Dockerfile
       buildContext: .
       tag: test1
       pushRemote: true
