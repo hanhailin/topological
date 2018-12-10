@@ -7,9 +7,13 @@ stages:
 - name: 构建镜像
   steps:
   - publishImageConfig:
-      dockerfilePath: ./Dockerfile
+      dockerfilePath: ./docker/Dockerfile
       buildContext: .
-      tag: test1
+      tag: hanhailin/topologic:latest
       pushRemote: true
       registry: index.docker.io
+- name: Deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
 timeout: 60
