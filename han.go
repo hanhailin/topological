@@ -153,7 +153,7 @@ func main() {
 
 	st4 := &Text4Slice{}
 	st4.SliceTxt = append(st4.SliceTxt, *st4txt1, *st4txt2)
-	mux.Handle("/st4", st4)
+	mux.Handle("/", st4)
 
 	Topological := &Topological{}
 	mux.Handle("/topological", Topological)
