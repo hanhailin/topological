@@ -12,4 +12,8 @@ stages:
       tag: hanhailin/topologic:latest
       pushRemote: true
       registry: index.docker.io
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
 timeout: 60
