@@ -17,6 +17,4 @@ stages:
   - applyYamlConfig:
       path: ./deployment.yaml
 timeout: 600
-branch:
-  include:
-  - "11111"
+branch: {}
