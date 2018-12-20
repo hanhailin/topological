@@ -1,20 +1,11 @@
 stages:
-- name: 编译
+- name: ff
   steps:
   - runScriptConfig:
-      image: golang:latest
-      shellScript: go build han.go
-- name: 构建镜像
-  steps:
-  - publishImageConfig:
-      dockerfilePath: ./docker/Dockerfile
-      buildContext: .
-      tag: hanhailin/topologic:latest
-      pushRemote: true
-      registry: index.docker.io
-- name: deploy
-  steps:
-  - applyYamlConfig:
-      path: ./deployment.yaml
+      image: python:latest
+      shellScript: |-
+        #!/bin/sh
+
+        ip a
 timeout: 600
 branch: {}
