@@ -10,6 +10,7 @@ stages:
       dockerfilePath: ./docker/Dockerfile
       buildContext: .
       tag: hanhailin/topologic:latest
+      pushRemote: true
       registry: index.docker.io
 - name: deploy
   steps:
